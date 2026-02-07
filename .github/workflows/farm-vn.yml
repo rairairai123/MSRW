@@ -20,11 +20,8 @@ on:
         type: choice
         options:
           - all
-          - thomas.baker.k49m@outlook.com
-          - kevin.turner.x92a@outlook.com
-          - david.wilson.p55q@outlook.com
-          - ryan.cooper.b10z@outlook.com
-          - emily.davis.h44q@hotmail.com
+          - minhtuan.dev88@outlook.com
+          - quanghuy.netvn@outlook.com
       skip_delay:
         description: 'Skip random start delay'
         required: false
