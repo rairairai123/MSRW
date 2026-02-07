@@ -1043,8 +1043,8 @@ async function main(): Promise<void> {
     if (cluster.isPrimary && dashboardEnabled) {
         const { DashboardServer } = await import('./dashboard/server')
         const { dashboardState } = await import('./dashboard/state')
-        const port = config.dashboard.port || 3000
-        const host = config.dashboard.host || '127.0.0.1'
+        const port = config.dashboard?.port || 3000
+        const host = config.dashboard?.host || '127.0.0.1'
 
         // Override env vars with config values
         process.env.DASHBOARD_PORT = String(port)
