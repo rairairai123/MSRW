@@ -53,8 +53,8 @@ jobs:
     - name: Install Dependencies
       run: npm ci
 
-    - name: Install Patchright Browser
-      run: npx patchright install chromium
+    - name: Install Playwright Browsers
+      run: npx playwright install chromium
 
     - name: Install Xvfb & Dependencies
       run: |
