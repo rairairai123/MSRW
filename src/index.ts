@@ -465,9 +465,16 @@ export class MicrosoftRewardsBot {
 
     private async runTasks(accounts: Account[], currentPass: number = 1, totalPasses: number = 1) {
         // Check if all accounts are already completed and prompt user
-        // BUT skip this check for multi-pass runs (passes > 1) OR if not on first pass
+        // BUT skip this check for multi-pass runs OR if FORCE_RUN env var is set
         const accountDayKey = this.utils.getFormattedDate()
-        const allCompleted = accounts.every(acc => this.shouldSkipAccount(acc.email, accountDayKey))
+        const forceRun = process.env.FORCE_RUN === 'true' || process.env.FORCE_RUN === '1'
+
+        let allCompleted = false
+        if (!forceRun) {
+            allCompleted = accounts.every(acc => this.shouldSkipAccount(acc.email, accountDayKey))
+        } else {
+            log('main', 'TASK', 'Force run enabled - bypassing daily completion check', 'log', 'cyan')
+        }
 
         // Only check completion on first pass and if not doing multiple passes
         if (allCompleted && accounts.length > 0 && currentPass === 1 && totalPasses === 1) {

@@ -27,6 +27,11 @@ on:
         required: false
         default: false
         type: boolean
+      force_run:
+        description: 'Force Run (Bypass daily completion check)'
+        required: false
+        default: false
+        type: boolean
 
 jobs:
   farm:
@@ -136,6 +141,8 @@ jobs:
         REWARDS_SCHEDULING_ENABLED: 'false'
         # Disable dashboard to ensure clean exit
         REWARDS_DASHBOARD_ENABLED: 'false'
+        # Force run option
+        FORCE_RUN: ${{ github.event.inputs.force_run }}
       run: |
         xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" npm start
 
