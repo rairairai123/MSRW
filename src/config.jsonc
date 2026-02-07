@@ -1,0 +1,146 @@
+{
+    "baseURL": "https://rewards.bing.com/",
+    "sessionPath": "sessions",
+    "dryRun": false,
+    "execution": {
+        "parallel": false,
+        "runOnZeroPoints": false,
+        "clusters": 1,
+        "passesPerRun": 1
+    },
+    "jobState": {
+        "enabled": true,
+        "dir": "",
+        "autoResetOnComplete": true
+    },
+    "workers": {
+        "doDailySet": true,
+        "doMorePromotions": true,
+        "doPunchCards": true,
+        "doDesktopSearch": true,
+        "doMobileSearch": true,
+        "doDailyCheckIn": true,
+        "doReadToEarn": true,
+        "doFreeRewards": false,
+        "bundleDailySetWithSearch": true
+    },
+    "search": {
+        "useLocalQueries": false,
+        "settings": {
+            "useGeoLocaleQueries": true,
+            "scrollRandomResults": true,
+            "clickRandomResults": true,
+            "retryMobileSearchAmount": 2,
+            "semanticDedup": true,
+            "semanticDedupThreshold": 0.65,
+            "delay": {
+                "min": "30s",
+                "max": "1min"
+            },
+            "langCode": "vi",
+            "geoLocale": "VN"
+        }
+    },
+    "queryDiversity": {
+        "enabled": true,
+        "sources": [
+            "google-trends",
+            "local-fallback"
+        ],
+        "maxQueriesPerSource": 15,
+        "cacheMinutes": 60
+    },
+    "humanization": {
+        "enabled": true,
+        "stopOnBan": true,
+        "immediateBanAlert": true,
+        "actionDelay": {
+            "min": 500,
+            "max": 2200
+        },
+        "gestureMoveProb": 0.65,
+        "gestureScrollProb": 0.4,
+        "allowedWindows": []
+    },
+    "riskManagement": {
+        "enabled": true,
+        "stopOnCritical": true
+    },
+    "retryPolicy": {
+        "maxAttempts": 3,
+        "baseDelay": 1000,
+        "maxDelay": "30s",
+        "multiplier": 2,
+        "jitter": 0.2
+    },
+    "browser": {
+        "headless": false,
+        "globalTimeout": "120s"
+    },
+    "fingerprinting": {
+        "saveFingerprint": {
+            "mobile": true,
+            "desktop": true
+        }
+    },
+    "proxy": {
+        "proxyGoogleTrends": true,
+        "proxyBingTerms": true
+    },
+    "webhook": {
+        "enabled": true,
+        "url": "https://discord.com/api/webhooks/1464538775425384450/J5HCMxYB9RzlNFxDr4KCvPC1L7VjvnciYwam2SNWJB3c7KSUFLIk1GSSs4CDrvtHiliB"
+    },
+    "conclusionWebhook": {
+        "enabled": false,
+        "url": ""
+    },
+    "ntfy": {
+        "enabled": false,
+        "url": "",
+        "topic": "rewards",
+        "authToken": ""
+    },
+    "logging": {
+        "excludeFunc": [
+            "SEARCH-CLOSE-TABS",
+            "LOGIN-NO-PROMPT",
+            "FLOW"
+        ],
+        "webhookExcludeFunc": [
+            "SEARCH-CLOSE-TABS",
+            "LOGIN-NO-PROMPT",
+            "FLOW"
+        ],
+        "redactEmails": true
+    },
+    "dashboard": {
+        "enabled": false,
+        "port": 3000,
+        "host": "127.0.0.1"
+    },
+    "scheduling": {
+        "enabled": true,
+        "time": "09:00",
+        "jitter": {
+            "enabled": true,
+            "minMinutesBefore": 40,
+            "maxMinutesAfter": 20
+        }
+    },
+    "update": {
+        "enabled": true,
+        "method": "github-api",
+        "dockerMode": "auto",
+        "autoUpdateConfig": true,
+        "autoUpdateAccounts": false
+    },
+    "errorReporting": {
+        "enabled": false
+    },
+    "telegram": {
+        "enabled": true,
+        "botToken": "8258770853:AAFvh_44ZIqt-oklRH3Xp5eT77q_eNOz30w",
+        "chatId": "7737657307"
+    }
+}
