@@ -1037,8 +1037,10 @@ async function main(): Promise<void> {
     // Scheduler instance (initialized in bootstrap if enabled)
     let scheduler: InternalScheduler | null = null
 
-    // Auto-start dashboard if enabled in config
-    if (cluster.isPrimary && config.dashboard?.enabled) {
+    // Auto-start dashboard if enabled in config (can be overridden by env var)
+    const dashboardEnvOverride = process.env.REWARDS_DASHBOARD_ENABLED
+    const dashboardEnabled = dashboardEnvOverride !== 'false' && dashboardEnvOverride !== '0' && config.dashboard?.enabled
+    if (cluster.isPrimary && dashboardEnabled) {
         const { DashboardServer } = await import('./dashboard/server')
         const { dashboardState } = await import('./dashboard/state')
         const port = config.dashboard.port || 3000
@@ -1055,6 +1057,8 @@ async function main(): Promise<void> {
         const dashboardServer = new DashboardServer()
         dashboardServer.start()
         log('main', 'DASHBOARD', `Auto-started dashboard on http://${host}:${port}`)
+    } else if (dashboardEnvOverride === 'false' || dashboardEnvOverride === '0') {
+        log('main', 'DASHBOARD', 'Dashboard disabled via REWARDS_DASHBOARD_ENABLED env var')
     }
 
     /**
@@ -1241,26 +1245,26 @@ async function main(): Promise<void> {
                 const schedulerStarted = scheduler.start()
 
                 if (!schedulerStarted) {
-                    log('main', 'MAIN', 'Scheduler failed to start. Exiting.', 'error')
-                    gracefulExit(1)
+                    // Scheduler disabled (e.g., via env var for CI) - fall through to one-time execution
+                    log('main', 'MAIN', 'Scheduler not started - falling back to one-time execution mode', 'warn')
+                    // Continue to one-time execution below (don't return here)
+                } else {
+                    log('main', 'MAIN', 'Bot running in scheduled mode. Process will stay alive.', 'log', 'green')
+                    log('main', 'MAIN', 'Press CTRL+C to stop the scheduler and exit.', 'log', 'cyan')
+
+                    // Now run initial execution (scheduler already active for future runs)
+                    try {
+                        await rewardsBot.initialize()
+                        await rewardsBot.run()
+                        log('main', 'MAIN', '✓ Initial run completed successfully', 'log', 'green')
+                    } catch (error) {
+                        log('main', 'MAIN', `Initial run failed: ${error instanceof Error ? error.message : String(error)}`, 'error')
+                        // Scheduler still active - will retry at next scheduled time
+                    }
+
+                    // Keep process alive - scheduler handles future executions
                     return
                 }
-
-                log('main', 'MAIN', 'Bot running in scheduled mode. Process will stay alive.', 'log', 'green')
-                log('main', 'MAIN', 'Press CTRL+C to stop the scheduler and exit.', 'log', 'cyan')
-
-                // Now run initial execution (scheduler already active for future runs)
-                try {
-                    await rewardsBot.initialize()
-                    await rewardsBot.run()
-                    log('main', 'MAIN', '✓ Initial run completed successfully', 'log', 'green')
-                } catch (error) {
-                    log('main', 'MAIN', `Initial run failed: ${error instanceof Error ? error.message : String(error)}`, 'error')
-                    // Scheduler still active - will retry at next scheduled time
-                }
-
-                // Keep process alive - scheduler handles future executions
-                return
             }
 
             // One-time execution (scheduling disabled)
