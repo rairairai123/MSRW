@@ -68,7 +68,7 @@ jobs:
       run: |
         if [ -n "${{ secrets.CONFIG_JSON }}" ]; then
           echo '${{ secrets.CONFIG_JSON }}' > src/config.jsonc
-        else
+        elif [ ! -f "src/config.jsonc" ]; then
           cp src/config.example.jsonc src/config.jsonc
         fi
 
@@ -76,7 +76,7 @@ jobs:
       run: |
         if [ -n "${{ secrets.ACCOUNTS_JSON }}" ]; then
           echo '${{ secrets.ACCOUNTS_JSON }}' > src/accounts.jsonc
-        else
+        elif [ ! -f "src/accounts.jsonc" ]; then
           cp src/accounts.example.jsonc src/accounts.jsonc
         fi
 
