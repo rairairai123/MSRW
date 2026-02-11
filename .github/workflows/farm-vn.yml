@@ -10,7 +10,7 @@ on:
     # 08:00 VN = 01:00 UTC
     # 14:00 VN = 07:00 UTC
     # 19:00 VN = 12:00 UTC
-    # - cron: '0 1,7,12 * * *'
+    - cron: '0 1,7,12 * * *'
   workflow_dispatch:
     inputs:
       account_filter:
