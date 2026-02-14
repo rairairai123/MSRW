@@ -9,7 +9,7 @@
         "passesPerRun": 1
     },
     "jobState": {
-        "enabled": true,
+        "enabled": false,
         "dir": "",
         "autoResetOnComplete": true
     },
